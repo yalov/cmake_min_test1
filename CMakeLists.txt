@@ -3,6 +3,16 @@
 project(cmake_min_test1 VERSION 0.1)
 string(TIMESTAMP BUILD_DATE "%Y%m%d")
 
+
+if(NOT DEFINED CMAKE_PROJECT_VERSION)
+	message(FATAL_ERROR "CMAKE_PROJECT_VERSION is not defined" )
+endif()
+
+if(NOT DEFINED BUILD_DATE)
+	message(FATAL_ERROR "BUILD_DATE is not defined" )
+endif()
+
+
 configure_file("version.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/version.h")
 
 set(CMAKE_CXX_STANDARD 17)
@@ -28,8 +38,4 @@ find_package(Boost COMPONENTS system thread REQUIRED)
 
 add_executable (${PROJECT_NAME} "main.cpp")
 
-target_link_libraries(${PROJECT_NAME} PRIVATE 
-	Boost::boost 
-	Boost::system 
-	Boost::thread
-)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARY_DIRS})
